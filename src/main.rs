@@ -1,8 +1,7 @@
-use clap::Parser;
-
-mod args;
+// mod args;
+mod cli;
 
 fn main() {
-    let x = args::Args::parse();
-    println!("{:?}", x.get_random_value());
+    let value = cli::command();
+    println!("{}", value);
 }
