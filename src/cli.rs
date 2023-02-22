@@ -31,7 +31,31 @@ pub fn command() -> String {
                         .help("False value"),
                 ),
         )
-        .subcommand(Command::new("text"));
+        .subcommand(
+            Command::new("text")
+                .about("Generate a random text")
+                .arg(
+                    Arg::new("length")
+                        .short('l')
+                        .long("length")
+                        .required(false)
+                        .help("Length of the text"),
+                )
+                .arg(
+                    Arg::new("file")
+                        .short('f')
+                        .long("file")
+                        .required(false)
+                        .help("File to read the text"),
+                )
+                .arg(
+                    Arg::new("language")
+                        .short('L')
+                        .long("language")
+                        .required(false)
+                        .help("Language of the text"),
+                ),
+        );
     // get the values of the arguments
     let matches = m.get_matches();
     if let Some(values) = matches.subcommand_matches("number") {
