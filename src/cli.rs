@@ -67,11 +67,11 @@ pub fn command() -> String {
 }
 
 fn generate_number(range: Range<i8>) -> i8 {
-    println!("Generate a random number");
+    print!("\nGenerate a random number: ");
     rand::thread_rng().gen_range(range)
 }
 
 fn generate_boolean() -> bool {
-    println!("Generate a random boolean");
+    print!("\nGenerate a random boolean: ");
     rand::thread_rng().gen()
 }
