@@ -1,7 +1,8 @@
-use std::ops::Range;
+use std::{ops::Range, io};
 
-use clap::{Arg, Command};
-use rand::Rng;
+use clap::{Arg, ArgMatches, Command};
+use rand::{Rng, random};
+use serde_json::{Value, Map};
 
 pub fn command() -> String {
     let m = Command::new("romazava")
@@ -31,6 +32,7 @@ pub fn command() -> String {
                         .help("False value"),
                 ),
         )
+        .subcommand(Command::new("emoji").about("Generate a random emoji"))
         .subcommand(
             Command::new("text")
                 .about("Generate a random text")
@@ -59,33 +61,14 @@ pub fn command() -> String {
     // get the values of the arguments
     let matches = m.get_matches();
     if let Some(values) = matches.subcommand_matches("number") {
-        let default_range = String::from("0..10");
-        let range = values.get_one::<String>("range").unwrap_or(&default_range);
-        let range: Vec<&str> = range.split("..").map(|s| s.trim()).collect();
-        let min = range[0].parse::<i8>().unwrap_or(0);
-        let max = range[1].parse::<i8>().unwrap_or(10) + 1;
-        let mut range = min..max;
-        if min > max {
-            range = max..min;
-        } else if min == max {
-            range = min..max + 1;
-        }
-        return generate_number(range).to_string();
+        return number(values);
     }
     if let Some(values) = matches.subcommand_matches("boolean") {
-        let default_true = String::from("true");
-        let default_false = String::from("false");
-        let true_value = values
-            .get_one::<String>("true_value")
-            .unwrap_or(&default_true);
-        let false_value = values
-            .get_one::<String>("false_value")
-            .unwrap_or(&default_false);
-        if generate_boolean() {
-            return true_value.to_string();
-        } else {
-            return false_value.to_string();
-        }
+        return boolean(values);
+    }
+    if let Some(_) = matches.subcommand_matches("emoji") {
+        let emoji = emoji();
+        return serde_json::to_string_pretty( &emoji).unwrap();
     }
     return String::from("Hello World");
 }
@@ -98,4 +81,42 @@ fn generate_number(range: Range<i8>) -> i8 {
 fn generate_boolean() -> bool {
     print!("\nGenerate a random boolean: ");
     rand::thread_rng().gen()
+}
+
+fn number(values: &ArgMatches) -> String {
+    let default_range = String::from("0..10");
+    let range = values.get_one::<String>("range").unwrap_or(&default_range);
+    let range: Vec<&str> = range.split("..").map(|s| s.trim()).collect();
+    let min = range[0].parse::<i8>().unwrap_or(0);
+    let max = range[1].parse::<i8>().unwrap_or(10) + 1;
+    let mut range = min..max;
+    if min > max {
+        range = max..min;
+    } else if min == max {
+        range = min..max + 1;
+    }
+    return generate_number(range).to_string();
+}
+
+fn boolean(values: &ArgMatches) -> String {
+    let default_true = String::from("true");
+    let default_false = String::from("false");
+    let true_value = values
+        .get_one::<String>("true_value")
+        .unwrap_or(&default_true);
+    let false_value = values
+        .get_one::<String>("false_value")
+        .unwrap_or(&default_false);
+    if generate_boolean() {
+        return true_value.to_string();
+    }
+    return false_value.to_string();
+}
+
+fn emoji() -> Map<String, Value> {
+    let file = std::fs::read_to_string("emoji.json").unwrap();
+    let emoji: Value = serde_json::from_str(&file).unwrap();
+    let _arr = emoji.as_array().unwrap();
+    let random_index = rand::thread_rng().gen_range(0.._arr.len());
+    return (_arr[random_index]).as_object().unwrap().clone();
 }
