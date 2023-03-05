@@ -17,10 +17,7 @@ impl Romazava {
             result: String::new(),
         }
     }
-    pub fn _print(self) {
-        println!("Operation: {}", self.operation);
-        println!("Result: {}", self.result);
-    }
+        
     pub fn number(&mut self, min: i8, max: i8) {
         self.operation = format!("Generate a random number between {} and {}", min, max - 1);
         let mut range = min..max;
