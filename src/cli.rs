@@ -3,7 +3,7 @@ use clap::{Command, Arg};
 use crate::romazava::{Romazava};
 
 pub fn command(mut romazava: Romazava) ->  Romazava {
-    let m = Command::new("romazava")
+    let mut m = Command::new("romazava")
         .subcommand(
             Command::new("number")
                 .about("Generate a random number")
@@ -49,7 +49,7 @@ pub fn command(mut romazava: Romazava) ->  Romazava {
                         .help("Language of the word"),
                 ),
         );
-    let matches = m.get_matches();
+    let matches = m.clone().get_matches();
     if let Some(values) = matches.subcommand_matches("number") {
         let default_range = String::from("0..10");
         let range = values.get_one::<String>("range").unwrap_or(&default_range);
@@ -75,5 +75,6 @@ pub fn command(mut romazava: Romazava) ->  Romazava {
         romazava.emoji();
         return romazava;
     }
-    todo!();
+    m.print_help().unwrap();
+    return romazava;
 }

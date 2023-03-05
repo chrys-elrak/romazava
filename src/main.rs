@@ -4,5 +4,7 @@ mod utils;
 fn main() {
     let romazava = romazava::Romazava::new();
     let value = cli::command(romazava);
-    println!("{}", value);
+    if value.is_ok() {
+        println!("{}", value);
+    }
 }
