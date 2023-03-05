@@ -1,7 +1,7 @@
-use std::{ops::Range, io};
+use std::{ops::Range};
 
 use clap::{Arg, ArgMatches, Command};
-use rand::{Rng, random};
+use rand::{Rng};
 use serde_json::{Value, Map};
 
 pub fn command() -> String {

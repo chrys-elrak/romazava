@@ -1,8 +1,5 @@
-use clap::builder::Str;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Emoji {
     pub multicode: bool,
