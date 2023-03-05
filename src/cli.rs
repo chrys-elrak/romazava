@@ -32,31 +32,23 @@ pub fn command(mut romazava: Romazava) ->  Romazava {
         )
         .subcommand(Command::new("emoji").about("Generate a random emoji"))
         .subcommand(
-            Command::new("text")
-                .about("Generate a random text")
-                .arg(
-                    Arg::new("length")
-                        .short('l')
-                        .long("length")
-                        .required(false)
-                        .help("Length of the text"),
-                )
+            Command::new("word")
+                .about("Generate a random word")
                 .arg(
                     Arg::new("file")
                         .short('f')
                         .long("file")
                         .required(false)
-                        .help("File to read the text"),
+                        .help("File to read the word"),
                 )
                 .arg(
                     Arg::new("language")
                         .short('L')
                         .long("language")
                         .required(false)
-                        .help("Language of the text"),
+                        .help("Language of the word"),
                 ),
         );
-    // get the values of the arguments
     let matches = m.get_matches();
     if let Some(values) = matches.subcommand_matches("number") {
         let default_range = String::from("0..10");
