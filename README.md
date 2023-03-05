@@ -8,7 +8,8 @@ For example, you can generate a random number between 1 and 100, or a random str
 Romazava is a Malagasy word which doesn't means "random" anymore, it's a name of a rice accompaniment. But it's a funny word, so I decided to use it for this project.
 If we describe the word "Romazava" in English, it will be something like simple but everybody likes it. (I think :D)
 For intimates, there is a song of the Malagasy singer [BIG MJ](https://www.youtube.com/watch?v=GYzLcOqjJnM) called "Romazava Dadiko".
-
+## Screenshots
+![Romazava](assets/romazava.png)
 ## Usage
 To see usage use the command `romazava help`
 
