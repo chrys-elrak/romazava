@@ -80,12 +80,15 @@ pub fn command(mut romazava: Romazava) -> Romazava {
             romazava.emoji();
         }
         Some(("word", values)) => {
+            let mut l: String = String::new();
+            let mut f: Option<String> = None;
             if let Some(lang) = values.get_one::<String>("language") {
-                println!("{}", lang);
+                l = lang.clone();
             }
             if let Some(file) = values.get_one::<String>("file") {
-                println!("{}", file);
+                f = Some(file.clone());
             }
+            romazava.word(l.as_str(), f);
         }
         _ => {
             m.print_help().unwrap();

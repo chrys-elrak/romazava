@@ -48,6 +48,28 @@ impl Romazava {
         let emoji = (_arr[random_index]).as_object().unwrap().clone();
         self.result = serde_json::to_string_pretty(&emoji).unwrap();
     }
+
+    pub fn word(&mut self, _lang: &str, file: Option<String>) {
+        self.operation = format!("Generate a random word");
+        // Todo: Add more languages
+        let filename: &str = match _lang {
+            "mg" => "teny.json",
+            "fr" => "mots.json",
+            _ => "words.json",
+        };
+        // Todo: Configurable word length
+        // check file type is json
+        let file = std::fs::read_to_string(file.unwrap_or(filename.to_string()));
+        if let Ok(f) = file {
+            let words = f.split_whitespace().collect::<Vec<&str>>();
+            let random_index = rand::thread_rng().gen_range(0..words.len());
+            self.result = words[random_index].to_string();
+        } else {
+            let words: Vec<Value> = serde_json::from_str(&file.unwrap()).unwrap();
+            let random_index = rand::thread_rng().gen_range(0..words.len());
+            self.result = words[random_index].to_string();
+        }
+    }
 }
 
 impl Display for Romazava {
